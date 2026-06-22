@@ -1,10 +1,10 @@
-# Torrent Scrapper for WordPress & Forum based communities
+# Torrent Scrapper for Blogs & Forums
 
 [![WordPress Compatibility](https://img.shields.io/badge/WordPress-6.0%20%2B-blue.svg)](https://wordpress.org)
 [![PHP Version Compatibility](https://img.shields.io/badge/PHP-8.2%20%2B-purple.svg)](https://php.net)
 [![License](https://img.shields.io/badge/License-GPL%20v2%20%2B-orange.svg)](LICENSE)
 
-A powerful, theme-adaptive WordPress plugin designed to scrape, publish, and track public torrent files and magnet links. It automatically fetches and updates tracker health statistics (seeders, leechers, and completed downloads) and integrates seamlessly into blog homepages, posts, and **wpForo** communities.
+A powerful, theme-adaptive plugin designed to scrape, publish, and track public torrent files and magnet links. It automatically fetches and updates tracker health statistics (seeders, leechers, and completed downloads) and integrates seamlessly into blog homepages, posts, and **wpForo** communities.
 
 ---
 
@@ -76,7 +76,7 @@ A powerful, theme-adaptive WordPress plugin designed to scrape, publish, and tra
 ## 🛠️ Installation & Setup
 
 1. **Upload**: Upload the entire `torrent-scraper` directory to your WordPress installation's `/wp-content/plugins/` directory (or zip it and upload via **Plugins → Add New**).
-2. **Activate**: Go to your WordPress Admin panel and activate the **Torrent Scrapper for Wordpress Blog/Forum** plugin.
+2. **Activate**: Go to your WordPress Admin panel and activate the **Torrent Scrapper for Blogs and Forums** plugin.
 3. **Configure**: Navigate to **Forum Dashboard → Torrents Settings** or the custom admin tab to configure your update intervals, active trackers, and settings.
 4. **Browse Page**: The plugin automatically creates a `/torrents` page on your site with the `[tp_torrent_browse]` shortcode to display the browse search table.
 
