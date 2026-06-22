@@ -1,0 +1,1241 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
+/**
+ * Torrent Scraper for Blogs/Forums — Theme-Adaptive CSS
+ * Version: 1.0.0
+ *
+ * RULE: All plugin components reference ONLY --tp-* variables.
+ *       Never use hardcoded colors, fonts, or border-radius values.
+ *       The --tp-* variables cascade through:
+ *         1. Block theme CSS variables (theme.json, WP 5.8+)
+ *         2. Popular classic theme variables (Astra, GeneratePress, OceanWP, Kadence)
+ *         3. wpForo CSS variables (if loaded)
+ *         4. Generic fallback defaults
+ */
+
+/* === ROOT VARIABLE DECLARATIONS === */
+
+.tp-wrap {
+    /* — Background — */
+    --tp-bg: var(--wp--preset--color--base,
+             var(--ast-global-color-4,
+             var(--color-background,
+             var(--background-color, #ffffff))));
+
+    /* — Surface (cards, panels) — */
+    --tp-surface: var(--wp--preset--color--base-2,
+                  var(--ast-global-color-5,
+                  var(--color-surface,
+                  var(--global-palette9, rgba(255, 255, 255, 0.05)))));
+
+    /* — Primary text — */
+    --tp-text: var(--wp--preset--color--contrast,
+               var(--ast-global-color-0,
+               var(--color-text,
+               var(--text-color, inherit))));
+
+    /* — Muted / secondary text — */
+    --tp-text-muted: var(--wp--preset--color--contrast-2,
+                     var(--ast-global-color-3,
+                     var(--color-text-light,
+                     var(--text-color-soft, #666666))));
+
+    /* — Accent / primary action — */
+    --tp-accent: var(--wp--preset--color--primary,
+                 var(--ast-global-color-1,
+                 var(--color-accent,
+                 var(--global-color-1,
+                 var(--color-primary, #0073aa)))));
+
+    /* — Border color — */
+    --tp-border: var(--wp--preset--color--contrast-3,
+                 var(--ast-border-color,
+                 var(--color-border,
+                 var(--border-color, rgba(0, 0, 0, 0.12)))));
+
+    /* — Border radius — */
+    --tp-radius: var(--wp--custom--border-radius,
+                 var(--global-border-radius,
+                 var(--ast-border-radius,
+                 var(--border-radius, 4px))));
+
+    /* — Font — */
+    --tp-font-family: var(--wp--preset--font-family--body,
+                      var(--body-font-family,
+                      var(--ast-body-font-family, inherit)));
+
+    --tp-font-size: var(--wp--preset--font-size--medium,
+                    var(--body-font-size, 1rem));
+
+    /* — Semantic colors — */
+    --tp-seeder-color: var(--wp--preset--color--vivid-green-cyan,
+                       var(--color-success, #00a32a));
+
+    --tp-leecher-color: var(--wp--preset--color--luminous-vivid-amber,
+                         var(--color-warning, #dba617));
+
+    /* — Apply internals — */
+    background-color: var(--tp-bg);
+    color: var(--tp-text);
+    font-family: var(--tp-font-family);
+    font-size: var(--tp-font-size);
+    line-height: 1.6;
+    box-sizing: border-box;
+}
+
+/* === wpForo overrides (loaded when wpForo is active) === */
+
+.wpforo-wrap .tp-wrap,
+.wpforo-post .tp-wrap {
+    --tp-bg: var(--wpf-color-bg,
+             var(--wp--preset--color--base, #ffffff));
+    --tp-text: var(--wpf-color-text,
+               var(--wp--preset--color--contrast, inherit));
+    --tp-accent: var(--wpf-color-primary,
+                 var(--wp--preset--color--primary, #0073aa));
+    --tp-border: var(--wpf-color-border,
+                 var(--wp--preset--color--contrast-3, rgba(0, 0, 0, 0.12)));
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   COMPONENT STYLES — all reference --tp-* only
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* --- Card --- */
+
+.tp-card {
+    background: var(--tp-surface);
+    color: var(--tp-text);
+    border: 1px solid var(--tp-border);
+    border-radius: var(--tp-radius);
+    padding: 1.25rem;
+    margin-bottom: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tp-card:hover {
+    border-color: var(--tp-accent);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--tp-accent) 15%, transparent);
+}
+
+.tp-card-title {
+    margin: 0 0 0.5rem;
+    font-size: 1.15em;
+    font-weight: 600;
+    color: var(--tp-text);
+}
+
+.tp-card-meta {
+    font-size: 0.9em;
+    color: var(--tp-text-muted);
+    margin-bottom: 0.75rem;
+}
+
+/* --- Stats badges --- */
+
+.tp-stats {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+}
+
+.tp-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.6rem;
+    border-radius: var(--tp-radius);
+    font-size: 0.85em;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.tp-badge-seeders {
+    color: var(--tp-seeder-color);
+    background: color-mix(in srgb, var(--tp-seeder-color) 12%, transparent);
+}
+
+.tp-badge-leechers {
+    color: var(--tp-leecher-color);
+    background: color-mix(in srgb, var(--tp-leecher-color) 12%, transparent);
+}
+
+.tp-badge-completed {
+    color: var(--tp-text-muted);
+    background: color-mix(in srgb, var(--tp-text-muted) 10%, transparent);
+}
+
+/* --- Magnet button --- */
+
+.tp-magnet-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.5rem 1rem;
+    color: var(--tp-accent);
+    border: 1px solid var(--tp-accent);
+    border-radius: var(--tp-radius);
+    background: transparent;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9em;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.tp-magnet-btn:hover,
+.tp-magnet-btn:focus {
+    background: var(--tp-accent);
+    color: var(--tp-bg);
+    text-decoration: none;
+}
+
+/* --- Tables --- */
+
+.tp-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+
+.tp-table th,
+.tp-table td {
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--tp-border);
+    color: var(--tp-text);
+}
+
+.tp-table th {
+    font-weight: 600;
+    color: var(--tp-text-muted);
+    background: color-mix(in srgb, var(--tp-surface) 80%, var(--tp-border));
+}
+
+.tp-table tbody tr:hover {
+    background: color-mix(in srgb, var(--tp-accent) 5%, transparent);
+}
+
+/* --- Torrent list --- */
+
+.tp-torrent-list {
+    overflow-x: auto;
+}
+
+/* --- File list --- */
+
+.tp-file-list {
+    overflow-x: auto;
+}
+
+/* --- Dashboard grid (admin) --- */
+
+.tp-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+/* --- Responsive --- */
+
+@media (max-width: 768px) {
+    .tp-stats {
+        flex-direction: column;
+    }
+
+    .tp-table {
+        font-size: 0.8em;
+    }
+
+    .tp-table th,
+    .tp-table td {
+        padding: 0.4rem 0.5rem;
+    }
+
+    .tp-card {
+        padding: 0.75rem;
+    }
+}
+
+/* --- Utility: screen reader only --- */
+
+.tp-sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* =========================================================================
+   PREMIUM ADMIN APP DASHBOARD & SETTINGS STYLES
+   ========================================================================= */
+
+.tp-wrap {
+    --tp-bg: transparent;
+    --tp-surface: #ffffff;
+    --tp-text: #2c3338;
+    --tp-text-muted: #626469;
+    --tp-accent: #2271b1;
+    --tp-accent-gradient: linear-gradient(135deg, #2271b1 0%, #135e96 100%);
+    --tp-accent-hover: #135e96;
+    --tp-border: #c3c4c7;
+    --tp-radius: 8px;
+    --tp-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    --tp-shadow-hover: 0 2px 5px rgba(0,0,0,0.08);
+    --tp-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+    
+    background: transparent;
+    color: var(--tp-text);
+    padding: 10px 20px 0 2px;
+    box-sizing: border-box;
+    font-family: var(--tp-font-family);
+    -webkit-font-smoothing: antialiased;
+}
+
+.tp-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--tp-border);
+    padding-bottom: 1.5rem;
+}
+.tp-wrap h1 {
+    font-family: var(--tp-font-family);
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--tp-text);
+    margin: 0 0 0.4rem 0;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+}
+.tp-subtitle {
+    color: var(--tp-text-muted);
+    font-size: 0.95rem;
+    margin: 0;
+    font-weight: 400;
+}
+
+/* Dashboard Cards */
+.tp-dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.tp-stat-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--tp-surface);
+    border: 1px solid var(--tp-border);
+    border-radius: var(--tp-radius);
+    padding: 1.5rem;
+    box-shadow: var(--tp-shadow);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.tp-stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--tp-shadow-hover);
+    border-color: color-mix(in srgb, var(--tp-accent) 30%, var(--tp-border));
+}
+.tp-stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; bottom: 0;
+    width: 5px;
+}
+.tp-stat-card.seeder-border::before {
+    background: var(--tp-seeder-color, #10b981);
+}
+.tp-stat-card.leecher-border::before {
+    background: var(--tp-leecher-color, #f59e0b);
+}
+.tp-stat-card.accent-border::before {
+    background: var(--tp-accent);
+}
+.tp-stat-card h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--tp-text-muted);
+}
+.tp-stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    line-height: 1;
+    margin: 0;
+    letter-spacing: -0.03em;
+}
+
+.tp-action-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background: var(--tp-surface);
+    border: 1px solid var(--tp-border);
+    border-radius: var(--tp-radius);
+    padding: 1.5rem;
+    box-shadow: var(--tp-shadow);
+    transition: all 0.3s ease;
+}
+.tp-action-card:hover {
+    box-shadow: var(--tp-shadow-hover);
+}
+.tp-action-card h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    color: var(--tp-text-muted);
+}
+.tp-card-desc {
+    font-size: 0.85rem;
+    color: var(--tp-text-muted);
+    margin: 0;
+    line-height: 1.5;
+}
+
+/* Premium Styled Buttons */
+.tp-btn-primary {
+    background: var(--tp-accent-gradient) !important;
+    color: #ffffff !important;
+    border: none !important;
+    padding: 0.7rem 1.5rem !important;
+    border-radius: 10px !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
+    cursor: pointer !important;
+    box-shadow: 0 4px 14px 0 rgba(79, 70, 229, 0.3) !important;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.4rem !important;
+    height: auto !important;
+    line-height: 1.4 !important;
+    text-decoration: none !important;
+}
+.tp-btn-primary:hover {
+    transform: translateY(-1px) !important;
+    box-shadow: 0 6px 20px 0 rgba(79, 70, 229, 0.4) !important;
+    opacity: 0.95;
+}
+.tp-btn-primary:active {
+    transform: translateY(1px) !important;
+}
+
+/* Segmented Pill Navigation (Tabs) */
+.tp-tabs-nav {
+    display: inline-flex;
+    background: #f1f5f9;
+    padding: 0.35rem;
+    border-radius: 12px;
+    gap: 0.25rem;
+    margin-bottom: 2rem;
+    border: 1px solid #e2e8f0;
+}
+.tp-tab-link {
+    color: var(--tp-text-muted);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 8px;
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+}
+.tp-tab-link:hover {
+    color: var(--tp-text);
+}
+.tp-tab-link.active {
+    color: var(--tp-text) !important;
+    background: #ffffff !important;
+    box-shadow: 0 4px 10px -1px rgba(15, 23, 42, 0.08), 0 2px 4px -2px rgba(15, 23, 42, 0.08) !important;
+}
+.tp-tab-content-container {
+    animation: tpFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes tpFadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Form Tables Settings */
+.tp-form-table {
+    margin: 0 !important;
+    width: 100% !important;
+}
+.tp-form-table th {
+    width: 280px !important;
+    padding: 1.5rem 1rem 1.5rem 0 !important;
+    font-weight: 600 !important;
+    color: var(--tp-text) !important;
+    font-size: 0.95rem !important;
+}
+.tp-form-table td {
+    padding: 1.5rem 0 !important;
+    vertical-align: middle !important;
+}
+.tp-form-table select,
+.tp-form-table input[type="number"] {
+    padding: 0.6rem 0.85rem !important;
+    border: 1px solid var(--tp-border) !important;
+    border-radius: 10px !important;
+    font-size: 0.9rem !important;
+    background: var(--tp-surface) !important;
+    color: var(--tp-text) !important;
+    width: 100% !important;
+    max-width: 280px !important;
+    min-height: 42px !important;
+    box-shadow: 0 1px 2px 0 rgba(15, 23, 42, 0.04) !important;
+    transition: all 0.2s ease !important;
+    font-family: var(--tp-font-family) !important;
+}
+.tp-form-table select:focus,
+.tp-form-table input[type="number"]:focus {
+    border-color: var(--tp-accent) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--tp-accent) 15%, transparent) !important;
+}
+.tp-form-table .description {
+    margin-top: 0.5rem !important;
+    font-size: 0.85rem !important;
+    color: var(--tp-text-muted) !important;
+}
+
+/* Custom Toggle CSS Switch */
+.tp-switch {
+    position: relative;
+    display: inline-block;
+    width: 48px;
+    height: 26px;
+    vertical-align: middle;
+}
+.tp-switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.tp-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: #cbd5e1;
+    transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 26px;
+}
+.tp-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: .25s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.15);
+}
+.tp-switch input:checked + .tp-slider {
+    background: var(--tp-accent-gradient);
+}
+.tp-switch input:checked + .tp-slider:before {
+    transform: translateX(22px);
+}
+
+/* Elegant Tables Overrides */
+.tp-table-container {
+    background: var(--tp-surface);
+    border: 1px solid var(--tp-border);
+    border-radius: var(--tp-radius);
+    overflow: hidden;
+    box-shadow: var(--tp-shadow);
+    margin-top: 1rem;
+}
+.tp-wrap .tp-table {
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    width: 100% !important;
+    border-collapse: collapse !important;
+}
+.tp-wrap .tp-table th {
+    background: #f8fafc !important;
+    font-weight: 700 !important;
+    color: var(--tp-text-muted) !important;
+    font-size: 0.8rem !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.07em !important;
+    padding: 1.1rem 1.5rem !important;
+    border-bottom: 1px solid var(--tp-border) !important;
+}
+.tp-wrap .tp-table td {
+    padding: 1.25rem 1.5rem !important;
+    border-bottom: 1px solid var(--tp-border) !important;
+    font-size: 0.9rem !important;
+    vertical-align: middle !important;
+    color: var(--tp-text) !important;
+}
+.tp-wrap .tp-table tbody tr {
+    transition: background-color 0.2s ease !important;
+}
+.tp-wrap .tp-table tbody tr:hover {
+    background: #f8fafc !important;
+}
+.tp-wrap .tp-table tr:last-child td {
+    border-bottom: none !important;
+}
+
+/* Status Pill Badges */
+.tp-status-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.25rem 0.75rem;
+    border-radius: 50px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+.tp-status-pill.status-active {
+    color: #065f46;
+    background-color: #d1fae5;
+}
+.tp-status-pill.status-pending {
+    color: #92400e;
+    background-color: #fef3c7;
+}
+.tp-status-pill.status-deleted {
+    color: #374151;
+    background-color: #f3f4f6;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   FRONTEND BROWSE PAGE — Search, Sort, Pagination, Grid
+   ═══════════════════════════════════════════════════════════════════════ */
+
+/* --- Browse wrapper --- */
+
+.tp-browse-wrap {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1rem 0;
+}
+
+/* --- Search & View Toggle Header --- */
+
+.tp-browse-header {
+    margin-bottom: 1.5rem;
+}
+
+.tp-browse-search-form {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.tp-browse-search-group {
+    display: flex;
+    flex: 1;
+    min-width: 200px;
+    gap: 0;
+}
+
+.tp-browse-search-input {
+    flex: 1;
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--tp-border);
+    border-right: none;
+    border-radius: var(--tp-radius) 0 0 var(--tp-radius);
+    font-size: 0.9rem;
+    color: var(--tp-text);
+    background: var(--tp-surface);
+    font-family: var(--tp-font-family);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    outline: none;
+}
+
+.tp-browse-search-input:focus {
+    border-color: var(--tp-accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--tp-accent) 12%, transparent);
+}
+
+.tp-browse-search-btn {
+    padding: 0.65rem 1.25rem;
+    border: 1px solid var(--tp-accent);
+    border-radius: 0 var(--tp-radius) var(--tp-radius) 0;
+    background: var(--tp-accent);
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    font-family: var(--tp-font-family);
+    transition: opacity 0.2s ease;
+    white-space: nowrap;
+}
+
+.tp-browse-search-btn:hover {
+    opacity: 0.9;
+}
+
+/* --- View Toggle Buttons --- */
+
+.tp-view-toggle {
+    display: flex;
+    gap: 0;
+    border: 1px solid var(--tp-border);
+    border-radius: var(--tp-radius);
+    overflow: hidden;
+}
+
+.tp-view-btn {
+    padding: 0.5rem 0.85rem;
+    background: var(--tp-surface);
+    border: none;
+    color: var(--tp-text-muted);
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    line-height: 1;
+}
+
+.tp-view-btn + .tp-view-btn {
+    border-left: 1px solid var(--tp-border);
+}
+
+.tp-view-btn:hover {
+    color: var(--tp-text);
+    background: color-mix(in srgb, var(--tp-accent) 8%, var(--tp-surface));
+}
+
+.tp-view-btn.active {
+    background: var(--tp-accent);
+    color: #ffffff;
+}
+
+/* --- Sortable Table Headers --- */
+
+.tp-browse-table-container {
+    background: var(--tp-surface);
+    border: 1px solid var(--tp-border);
+    border-radius: var(--tp-radius);
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+}
+
+.tp-browse-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th.tp-sortable {
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding-right: 1.5rem !important;
+    transition: color 0.2s ease;
+}
+
+th.tp-sortable:hover {
+    color: var(--tp-accent) !important;
+}
+
+.tp-sort-arrow {
+    display: inline-block;
+    width: 0;
+    height: 0;
+    margin-left: 0.4rem;
+    vertical-align: middle;
+    opacity: 0.3;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    border-bottom: 5px solid currentColor;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+th.tp-sort-asc .tp-sort-arrow {
+    opacity: 1;
+    border-bottom: 5px solid var(--tp-accent);
+    transform: rotate(0deg);
+}
+
+th.tp-sort-desc .tp-sort-arrow {
+    opacity: 1;
+    border-bottom: 5px solid var(--tp-accent);
+    transform: rotate(180deg);
+}
+
+/* --- Torrent Name in Table --- */
+
+.tp-torrent-name {
+    font-weight: 500;
+    color: var(--tp-text);
+}
+
+.tp-magnet-icon {
+    text-decoration: none;
+    font-size: 0.85em;
+    opacity: 0.7;
+    transition: opacity 0.2s ease;
+}
+
+.tp-magnet-icon:hover {
+    opacity: 1;
+}
+
+/* --- Blog Style Card Grid --- */
+
+.tp-browse-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.25rem;
+}
+
+.tp-browse-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.tp-browse-card .tp-card-title {
+    font-size: 1.05em;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.tp-browse-card .tp-meta-date {
+    color: var(--tp-text-muted);
+}
+
+/* --- Empty State --- */
+
+.tp-browse-empty {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--tp-text-muted);
+    font-size: 1rem;
+}
+
+/* --- Pagination --- */
+
+.tp-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--tp-border);
+}
+
+.tp-pagination-perpage {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.85rem;
+    color: var(--tp-text-muted);
+}
+
+.tp-perpage-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.3rem 0.65rem;
+    border: 1px solid var(--tp-border);
+    border-radius: var(--tp-radius);
+    background: var(--tp-surface);
+    color: var(--tp-text-muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.tp-perpage-btn:hover {
+    border-color: var(--tp-accent);
+    color: var(--tp-accent);
+    text-decoration: none;
+}
+
+.tp-perpage-btn.active {
+    background: var(--tp-accent);
+    border-color: var(--tp-accent);
+    color: #ffffff;
+}
+
+.tp-pagination-pages {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    flex-wrap: wrap;
+}
+
+.tp-pagination-info {
+    font-size: 0.85rem;
+    color: var(--tp-text-muted);
+    margin-right: 0.75rem;
+}
+
+.tp-page-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 34px;
+    height: 34px;
+    padding: 0 0.5rem;
+    border: 1px solid var(--tp-border);
+    border-radius: var(--tp-radius);
+    background: var(--tp-surface);
+    color: var(--tp-text);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.tp-page-btn:hover {
+    border-color: var(--tp-accent);
+    color: var(--tp-accent);
+    text-decoration: none;
+}
+
+.tp-page-btn.active {
+    background: var(--tp-accent);
+    border-color: var(--tp-accent);
+    color: #ffffff;
+    pointer-events: none;
+}
+
+.tp-page-ellipsis {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 28px;
+    height: 34px;
+    color: var(--tp-text-muted);
+    font-size: 0.85rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   GLOBAL STATS WIDGET
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.tp-global-stats-bar {
+    max-width: 1000px !important;
+    margin: 2rem auto !important;
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+.tp-global-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+}
+
+.tp-global-stats-bar .tp-stat-card {
+    text-align: center;
+}
+
+.tp-global-stats-bar .tp-stat-card h3 {
+    font-size: 0.75rem;
+}
+
+.tp-global-stats-bar .tp-stat-number {
+    font-size: 2rem;
+    color: var(--tp-text);
+}
+
+.tp-stats-footer-label {
+    text-align: center;
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--tp-text-muted);
+    font-weight: 500;
+    letter-spacing: 0.03em;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   USER PROFILE TORRENT SECTION
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.tp-profile-torrents {
+    margin: 2rem 0;
+}
+
+.tp-profile-torrents-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0 0 0.25rem 0;
+    color: var(--tp-text);
+}
+
+.tp-profile-torrents-count {
+    font-size: 0.85rem;
+    color: var(--tp-text-muted);
+    margin: 0 0 1rem 0;
+}
+
+.tp-profile-more {
+    text-align: center;
+    margin-top: 0.75rem;
+    font-size: 0.85rem;
+    color: var(--tp-text-muted);
+    font-style: italic;
+}
+
+/* --- wpForo Profile Section Overrides --- */
+
+.wpforo-wrap .tp-profile-torrents {
+    padding: 1rem 0;
+}
+
+.wpforo-wrap .tp-profile-torrents-title {
+    font-size: 1.1rem;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   RESPONSIVE — Browse Page, Stats, Profile
+   ═══════════════════════════════════════════════════════════════════════ */
+
+@media (max-width: 768px) {
+    .tp-browse-search-form {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .tp-browse-search-group {
+        width: 100%;
+    }
+
+    .tp-view-toggle {
+        align-self: flex-start;
+    }
+
+    .tp-browse-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tp-pagination {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .tp-global-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .tp-global-stats-bar .tp-stat-number {
+        font-size: 1.5rem;
+    }
+
+    .tp-browse-table-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+}
+
+@media (max-width: 480px) {
+    .tp-global-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .tp-pagination-pages {
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   SIDEBAR STATS WIDGET (compact layout for blog sidebars/footer columns)
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.tp-sidebar-stats {
+    padding: 0 !important;
+    background: transparent !important;
+}
+
+.tp-sidebar-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin: 0 0 0.5rem 0;
+    color: var(--tp-text);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.tp-sidebar-row {
+    font-size: 0.9rem;
+    color: var(--tp-text);
+    margin-bottom: 0.35rem;
+    line-height: 1.4;
+}
+
+.tp-sidebar-stat-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.tp-sidebar-emoji {
+    font-size: 1rem;
+    display: inline-block;
+}
+
+.tp-sidebar-stat-value {
+    font-weight: 700;
+    color: var(--tp-text);
+}
+
+.tp-sidebar-stat-label {
+    color: var(--tp-text-muted);
+}
+
+.tp-sidebar-stat-item.seeder .tp-sidebar-stat-value,
+.tp-sidebar-stat-item.seeder .tp-sidebar-emoji {
+    color: var(--tp-seeder-color, #10b981) !important;
+}
+
+.tp-sidebar-stat-item.leecher .tp-sidebar-stat-value,
+.tp-sidebar-stat-item.leecher .tp-sidebar-emoji {
+    color: var(--tp-leecher-color, #f59e0b) !important;
+}
+
+.tp-sidebar-separator {
+    color: var(--tp-text-muted);
+    margin-right: 0.25rem;
+}
+
+.tp-sidebar-note {
+    font-size: 0.8rem;
+    color: var(--tp-text-muted);
+    font-weight: 600;
+    margin-top: 0.75rem;
+    line-height: 1.4;
+}
+
+.tp-sidebar-disclaimer {
+    font-size: 0.75rem;
+    color: var(--tp-text-muted);
+    line-height: 1.45;
+    margin-top: 0.5rem;
+    opacity: 0.85;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════
+   "BROWSE ALL TORRENTS" LINK BUTTON
+   ═══════════════════════════════════════════════════════════════════════ */
+
+.tp-stats-browse-link {
+    text-align: center;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.tp-stats-browse-link.sidebar {
+    margin-top: 0.75rem;
+    text-align: left;
+}
+
+.tp-browse-all-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.6rem 1.5rem;
+    background: var(--tp-accent);
+    color: #ffffff;
+    border-radius: var(--tp-radius);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 8px color-mix(in srgb, var(--tp-accent) 25%, transparent);
+}
+
+.tp-browse-all-btn:hover {
+    opacity: 0.9;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px color-mix(in srgb, var(--tp-accent) 35%, transparent);
+    text-decoration: none;
+    color: #ffffff;
+}
+
+.tp-stats-browse-link.sidebar .tp-browse-all-btn {
+    display: block;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+}
+
+/* wpForo Separate Torrent Stats Box Overrides */
+.tp-wpforo-stats-footer {
+    margin-bottom: -20px !important;
+}
+
+.tp-wpforo-stats-footer li {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+    margin-right: 25px !important;
+    transition: transform 0.2s ease !important;
+}
+
+.tp-wpforo-stats-footer li:hover {
+    transform: translateY(-1px) !important;
+}
+
+.tp-wpforo-stats-footer .wpf-stat-icon {
+    font-size: 1.15em !important;
+    line-height: 1 !important;
+    margin-right: 4px !important;
+}
+
+.tp-wpforo-stats-footer .wpf-stat-value {
+    font-weight: 700 !important;
+}
+
+.tp-wpforo-stats-footer .tp-stat-seeders .wpf-stat-value,
+.tp-wpforo-stats-footer .tp-stat-seeders .wpf-stat-icon {
+    color: var(--tp-seeder-color, #00a32a) !important;
+}
+
+.tp-wpforo-stats-footer .tp-stat-leechers .wpf-stat-value,
+.tp-wpforo-stats-footer .tp-stat-leechers .wpf-stat-icon {
+    color: var(--tp-leecher-color, #ef4444) !important;
+}
+
+.tp-wpforo-stats-footer .tp-stat-downloads .wpf-stat-value,
+.tp-wpforo-stats-footer .tp-stat-downloads .wpf-stat-icon {
+    color: var(--tp-accent, #2271b1) !important;
+}
+
+.tp-wpforo-stats-footer a {
+    text-decoration: none !important;
+    color: inherit !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 0.35rem !important;
+}
+
+.tp-wpforo-stats-footer a:hover {
+    color: var(--tp-accent, #2271b1) !important;
+    text-decoration: underline !important;
+}
+
+/* Styling overrides when sidebar stats is in footer column */
+footer .tp-sidebar-stats {
+    margin-top: 1rem !important;
+    max-width: 240px !important;
+}
